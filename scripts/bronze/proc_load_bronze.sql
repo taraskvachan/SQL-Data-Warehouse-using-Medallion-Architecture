@@ -1,3 +1,15 @@
+/*
+===============================================================================
+Stored Procedure: Load Bronze Layer (Source -> Bronze)
+===============================================================================
+Script Purpose:
+    This stored procedure loads data into the 'bronze' schema from external CSV files. 
+    It performs the following actions:
+    - Truncates the bronze tables before loading data.
+    - Load data from csv Files to bronze tables.
+===============================================================================
+*/
+
 CREATE OR REPLACE PROCEDURE bronze.load_bronze()
 LANGUAGE plpgsql
 AS $$
@@ -12,19 +24,15 @@ BEGIN
     RAISE NOTICE 'Loading CRM Tables';
     RAISE NOTICE '------------------------------------------------';
 	
-	-- Load bronze.crm_cust_info
+    -- Load bronze.crm_cust_info
     
-	RAISE NOTICE '>> Truncating Table: bronze.crm_cust_info';
-	TRUNCATE TABLE bronze.crm_cust_info;
+    RAISE NOTICE '>> Truncating Table: bronze.crm_cust_info';
+    TRUNCATE TABLE bronze.crm_cust_info;
 
-	RAISE NOTICE '>> Inserting Data Into: bronze.crm_cust_info';
-	COPY bronze.crm_cust_info
-	FROM 'D:/datasets/source_crm/cust_info.csv'
-	WITH (
-    	FORMAT csv,
-    	HEADER true,  
-    	DELIMITER ','
-	);
+    RAISE NOTICE '>> Inserting Data Into: bronze.crm_cust_info';
+    COPY bronze.crm_cust_info
+    FROM 'D:/datasets/source_crm/cust_info.csv'
+    WITH (FORMAT csv, HEADER true, DELIMITER ',');
 	
 	-- Load bronze.crm_prd_info
     RAISE NOTICE '>> Truncating Table: bronze.crm_prd_info';
